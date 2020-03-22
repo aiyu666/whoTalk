@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "linebot": "^1.5.3"
+    "linebot": "^1.5.3",
+    "mongodb": "^3.5.5"
   }
 }
