@@ -8,7 +8,7 @@ var bot = linebot({
 
 bot.on('message', function (event) {
     console.log(`I got the message -> ${event.message.text}`)
-    event.reply("尬~").then(function (data) {
+    event.reply(`${JSON.stringify(event)}`).then(function (data) {
         // success
         console.log(`Reply success`)
     }).catch(function (error) {
@@ -16,6 +16,27 @@ bot.on('message', function (event) {
         console.log(`Some error message => ${error}`)
     });
 });
+bot.on('join', function (event) {
+    console.log(`I got the join -> ${JSON.stringify(event)}`)
+});
+bot.on('leave', function (event) {
+    console.log(`I got the leave -> ${JSON.stringify(event)}`)
+});
+bot.on('memberJoined', function (event) {
+    console.log(`I got the memberJoined -> ${JSON.stringify(event)}`)
+    event.reply(`尬～～～初次見面你好`).then(function (data) {
+        // success
+        console.log(`Reply success`)
+    }).catch(function (error) {
+        // error
+        console.log(`Some error message => ${error}`)
+    });
+
+});
+
+
+
+
 
 
 bot.listen('/linewebhook', 5000);
