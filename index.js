@@ -2,11 +2,12 @@ const linebot = require('linebot');
 const MongoDB = require('./module/connectMongoDB');
 // const getProfile = require('./module/getProfile');
 
-// const bot = linebot({
-//     channelId: "",
-//     channelSecret: "",
-//     channelAccessToken: ""
-// });
+
+const bot = linebot({
+    channelId: "",
+    channelSecret: "",
+    channelAccessToken: ""
+});
 
 
 bot.on('message', async function (event) {
@@ -31,10 +32,12 @@ bot.on('join', async function (event) {
         "data": {},
         "timestamp": event.timestamp
     });
-    await console.log(`I join the channel -> ${JSON.stringify(event.source.groupId)}`)
 });
-bot.on('leave', function (event) {
-    console.log(`I got the leave -> ${JSON.stringify(event)}`)
+bot.on('leave', async function (event) {
+    await console.log(`I got the leave -> ${JSON.stringify(event.source.groupId)}`)
+    await MongoDB.deleteData({
+        "groupId": event.source.groupId,
+    });
 });
 bot.on('memberJoined', function (event) {
     console.log(`I got the memberJoined -> ${JSON.stringify(event)}`)
