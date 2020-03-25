@@ -6,8 +6,8 @@ async function connectMongo() {
         console.log(`Some error with => ${err}`)
         throw err;
     });
-    console.log(`Connect success =>`)
-    return db.db('whoTalk')
+    console.log(`Connect success`)
+    return db
 };
 
 async function closeDB(db) {
@@ -18,8 +18,8 @@ async function closeDB(db) {
 
 async function inserData(data) {
     const db = await connectMongo();
-    const collection = await db.collection('whoTalk');
-    await collection.insert(data);
+    const collection = await db.db('whoTalk').collection('whoTalk');
+    await collection.insertOne(data);
     console.log(`Insert data sucess`)
     closeDB(db);
     return
@@ -27,10 +27,11 @@ async function inserData(data) {
 
 async function queryData() {
     const db = await connectMongo();
-    const collection = await db.collection('whoTalk');
+    const collection = await db.db('whoTalk').collection('whoTalk');
     const queryData = await collection.find({}).toArray();
     await console.log(JSON.stringify(queryData))
     await console.log(`qerry success`);
+    closeDB(db);
     return JSON.stringify(queryData);
 }
 
