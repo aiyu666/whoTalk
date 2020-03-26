@@ -1,8 +1,9 @@
 
 var MongoClient = require('mongodb').MongoClient;
+require('dotenv').config();
 
 async function connectMongo() {
-    const db = await MongoClient.connect("mongodb://localhost:27017/whoTalk", { useUnifiedTopology: true }).catch(err => {
+    const db = await MongoClient.connect(process.env.MONGO_HOST, { useUnifiedTopology: true }).catch(err => {
         console.log(`Some error with => ${err}`)
         throw err;
     });
@@ -28,7 +29,7 @@ async function queryData() {
     return JSON.stringify(queryData);
 }
 
-async function inserData(data) {
+async function insertData(data) {
     const db = await connectMongo();
     const collection = db.collection;
     await collection.insertOne(data);
@@ -46,10 +47,20 @@ async function deleteData(data) {
     return
 }
 
+async function updateData(query, data) {
+    const db = await connectMongo();
+    const collection = db.collection;
+    await collection.updateOne(query, data);
+    console.log(`Delete data sucess`)
+    closeDB(db.connectDB);
+    return
+}
+
 module.exports = {
     connectMongo,
     closeDB,
-    inserData,
+    insertData,
     queryData,
-    deleteData
+    deleteData,
+    updateData
 }
