@@ -12,6 +12,7 @@ const bot = linebot({
 });
 bot.on('message', async function (event) {
     if (event.message.type != 'text') return
+    console.log(new Date());
     const profile = await bot.getUserProfile(event.source.userId);
     const name = await profile.displayName === undefined ? "見不得人的怪人" : profile.displayName
     const msg = await messageParsing.messageSelector(event.source.groupId, event.source.userId, name, event.message.text, event.timestamp)
