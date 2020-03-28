@@ -19,40 +19,39 @@ async function closeDB(db) {
     return
 };
 
-async function queryData() {
+async function queryData(data) {
     const db = await connectMongo();
-    const collection = db.collection;
-    const queryData = await collection.find({}).toArray();
-    await console.log(JSON.stringify(queryData))
+    const collection = await db.collection;
+    const queryData = await collection.find(data).toArray();
+    await closeDB(db.connectDB);
     await console.log(`qerry success`);
-    closeDB(db.connectDB);
     return JSON.stringify(queryData);
 }
 
 async function insertData(data) {
     const db = await connectMongo();
-    const collection = db.collection;
+    const collection = await db.collection;
     await collection.insertOne(data);
-    console.log(`Insert data sucess`)
-    closeDB(db.connectDB);
+    await console.log(`Insert data sucess`)
+    await closeDB(db.connectDB);
     return
 }
 
 async function deleteData(data) {
     const db = await connectMongo();
-    const collection = db.collection;
+    const collection = await db.collection;
     await collection.deleteOne(data);
-    console.log(`Delete data sucess`)
-    closeDB(db.connectDB);
+    await console.log(`Delete data sucess`)
+    await closeDB(db.connectDB);
     return
 }
 
 async function updateData(query, data) {
     const db = await connectMongo();
-    const collection = db.collection;
+    const collection = await db.collection;
     await collection.updateOne(query, data);
-    console.log(`Delete data sucess`)
-    closeDB(db.connectDB);
+    await console.log(`Delete data sucess`)
+    await closeDB(db.connectDB);
     return
 }
 

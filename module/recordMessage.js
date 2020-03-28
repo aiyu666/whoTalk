@@ -1,8 +1,9 @@
 const MongoDB = require('./connectMongoDB');
 
-async function recordMessage(userId, name, message, timestamp) {
+async function textMessage(groupId, userId, name, message, timestamp) {
     return await MongoDB.insertData(
         {
+            "groupId": groupId,
             "userId": userId,
             "name": name,
             "message": message,
@@ -11,5 +12,5 @@ async function recordMessage(userId, name, message, timestamp) {
         });
 }
 module.exports = {
-    recordMessage
+    textMessage
 }
