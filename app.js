@@ -1,6 +1,6 @@
 const linebot = require('linebot');
 const MongoDB = require('./module/connectMongoDB');
-const recordMessage = require('./module/recordMessage');
+const messageParsing = require('./module/messageParsing');
 const gropEvent = require('./module/gropEvent')
 
 require('dotenv').config();
@@ -11,19 +11,12 @@ const bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 bot.on('message', async function (event) {
+    if (event.message.type != 'text') return
     const profile = await bot.getUserProfile(event.source.userId);
     const name = await profile.displayName === undefined ? "見不得人的怪人" : profile.displayName
-    await MongoDB.insertData(
-        {
-            "userId": event.source.userId,
-            "name": name,
-            "message": event.message.text,
-            "tag": "userMessage",
-            "timestamp": event.timestamp
-        });
-    // await event.reply(`${name} : ${event.message.text}`)
-    // await event.reply(`尬~${JSON.stringify(groupMember)}`)
-
+    const msg = await messageParsing.messageSelector(event.source.groupId, event.source.userId, name, event.message.text, event.timestamp)
+    await console.log(`MSG => ${msg}`)
+    if (msg != undefined) await event.reply(msg)
     await console.log(`Reply success`)
 });
 bot.on('join', async function (event) {
