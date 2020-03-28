@@ -41,5 +41,5 @@ bot.on('memberJoined', function (event) {
 });
 
 
-bot.listen('/linewebhook', 5000);
+bot.listen('/linewebhook', process.env.PORT || 5000);
 console.log("Listening...5000 port")
