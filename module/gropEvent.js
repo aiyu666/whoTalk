@@ -1,4 +1,4 @@
-const MongoDB = require('./connectMongoDB');
+const MongoDB = require("./connectMongoDB");
 
 async function joinGroup(groupId, timestamp) {
     return await MongoDB.insertData({
@@ -12,4 +12,3 @@ async function joinGroup(groupId, timestamp) {
 module.exports = {
     joinGroup
 }
-
