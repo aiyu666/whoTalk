@@ -17,6 +17,7 @@ bot.on('message', async function (event) {
     const name = await profile.displayName === undefined ? "見不得人的怪人" : profile.displayName
     if (event.message.type === 'text') {
         const msg = await messageParsing.messageSelector(event.source.groupId, event.source.userId, name, event.message.text, event.timestamp)
+        if (msg != undefined && msg[0] === 'pick') await event.reply(msg[1])
         if (msg != undefined && msg[0] === 'text') await event.reply(["尬~他剛剛說下面這句話，\n真的當本尬是塑膠", msg[1]])
         if (msg != undefined && msg[0] === 'sticker') await event.reply({
             type: 'image',
