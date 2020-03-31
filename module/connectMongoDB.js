@@ -9,7 +9,7 @@ async function connectMongo() {
     console.log("Connect success");
     return {
         connectDB: db,
-        collection: db.db("whoTalk").collection("whoTalk");
+        collection: db.db("whoTalk").collection("whoTalk")
     }
 }
 
