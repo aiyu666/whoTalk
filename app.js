@@ -28,8 +28,8 @@ bot.on("message", async function(event) {
             case "sticker":
                 replyMessage = {
                     type: "image",
-                    originalContentUrl: "https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png",
-                    previewImageUrl: "https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png"
+                    originalContentUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`,
+                    previewImageUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`
                 };
                 break;
             case "pick":
@@ -47,19 +47,19 @@ bot.on("join", async function(event) {
 });
 
 bot.on("leave", async function(event) {
-    await console.log("I am leaved group -> ${JSON.stringify(event.source.groupId)}")
+    await console.log(`I am leaved group -> ${JSON.stringify(event.source.groupId)}`)
     // await MongoDB.deleteData({
     //     "groupId": event.source.groupId,
     // });
 });
 bot.on("memberJoined", function(event) {
-    console.log("I got the memberJoined -> ${JSON.stringify(event)}")
+    console.log(`I got the memberJoined -> ${JSON.stringify(event)}`)
     event.reply("尬～～～初次見面你好").then(function(data) {
         // success
         console.log("Reply success")
     }).catch(function(error) {
         // error
-        console.log("Some error message => ${error}")
+        console.log(`Some error message => ${error}`)
     });
 });
 

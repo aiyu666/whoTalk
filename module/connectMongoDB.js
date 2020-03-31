@@ -3,7 +3,7 @@ require("dotenv").config();
 
 async function connectMongo() {
     const db = await MongoClient.connect(process.env.MONGO_HOST, { useUnifiedTopology: true }).catch(err => {
-        console.log("Some error with => ${err}");
+        console.log(`Some error with => ${err}`);
         throw err;
     });
     console.log("Connect success");
