@@ -13,16 +13,25 @@ module.exports = async function(groupId) {
     const defenseReplyToken = queryData[0].replyToken;
     const messageTag = queryData[0].tag;
     const messageTimestamp = queryData[0].timestamp;
+    const defensCode = getRandomNumber(3);
 
     await collection.updateOne({ "_id": queryData[0]._id }, { $set: { "catch": "In Defense" } }).catch(err => console.log(`Got some error from update data in got you ->${err}`));
 
     if (messageTag === "userTextMessage") {
         const msg = await queryData[0].message;
-        return ["text", msg, "12345", defenseReplyToken, messageTimestamp]
+        return ["text", msg, defensCode, defenseReplyToken, messageTimestamp]
     }
     if (messageTag === "userStickerMessage") {
         const stikerID = await queryData[0].stickerId;
-        return ["sticker", stikerID, "12345", defenseReplyToken, messageTimestamp]
+        return ["sticker", stikerID, defensCode, defenseReplyToken, messageTimestamp]
     }
 
+}
+
+function getRandomNumber(len) {
+    var randomNum = "";
+    for (var i = 0; i < len; i++) {
+        randomNum += Math.floor(Math.random() * 10).toString();
+    }
+    return randomNum
 }

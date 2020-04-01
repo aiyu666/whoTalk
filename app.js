@@ -11,7 +11,7 @@ const bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-const sleep = () => new Promise((res, rej) => setTimeout(res, 2000));
+const sleep = () => new Promise((res, rej) => setTimeout(res, 2300));
 
 bot.on("message", async function(event) {
     console.log(new Date());
