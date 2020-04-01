@@ -9,7 +9,7 @@ async function textMessage(replyToken, groupId, userId, name, message, timestamp
         "message": message,
         "tag": "userTextMessage",
         "timestamp": timestamp,
-        "catch": ""
+        "defenseStatus": ""
     });
 }
 
@@ -22,7 +22,7 @@ async function stickerMessage(replyToken, groupId, userId, name, stickerId, time
         "stickerId": stickerId,
         "tag": "userStickerMessage",
         "timestamp": timestamp,
-        "catch": ""
+        "defenseStatus": ""
     });
 }
 
