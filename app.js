@@ -11,7 +11,7 @@ const bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-const sleep = () => new Promise((res, rej) => setTimeout(res, 2300));
+const sleep = () => new Promise((res, rej) => setTimeout(res, 2500));
 
 bot.on("message", async function(event) {
     console.log(new Date());
@@ -32,7 +32,7 @@ bot.on("message", async function(event) {
         const defenseCode = msg[2];
         const replyToken = msg[3];
         const messageTimestamp = msg[4];
-        var replyMessage;
+        let replyMessage;
 
         replyMessage = `一秒內輸入防禦碼: ${defenseCode}`;
         await bot.reply(replyToken, replyMessage);

@@ -29,8 +29,8 @@ module.exports = async function(groupId) {
 }
 
 function getRandomNumber(len) {
-    var randomNum = "";
-    for (var i = 0; i < len; i++) {
+    let randomNum = "";
+    for (let i = 0; i < len; i++) {
         randomNum += Math.floor(Math.random() * 10).toString();
     }
     return randomNum
