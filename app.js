@@ -35,6 +35,8 @@ bot.on("message", async function(event) {
             case "pick":
                 replyMessage = messageData;
                 break;
+            case "skip":
+                return
         }
         await event.reply(replyMessage);
         await console.log("Reply success");
