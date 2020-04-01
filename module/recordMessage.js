@@ -1,24 +1,28 @@
 const MongoDB = require("./connectMongoDB");
 
-async function textMessage(groupId, userId, name, message, timestamp) {
+async function textMessage(replyToken, groupId, userId, name, message, timestamp) {
     return await MongoDB.insertData({
+        "replyToken": replyToken,
         "groupId": groupId,
         "userId": userId,
         "name": name,
         "message": message,
         "tag": "userTextMessage",
-        "timestamp": timestamp
+        "timestamp": timestamp,
+        "catch": ""
     });
 }
 
-async function stickerMessage(groupId, userId, name, stickerId, timestamp) {
+async function stickerMessage(replyToken, groupId, userId, name, stickerId, timestamp) {
     return await MongoDB.insertData({
+        "replyToken": replyToken,
         "groupId": groupId,
         "userId": userId,
         "name": name,
         "stickerId": stickerId,
         "tag": "userStickerMessage",
-        "timestamp": timestamp
+        "timestamp": timestamp,
+        "catch": ""
     });
 }
 
