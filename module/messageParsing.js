@@ -5,7 +5,8 @@ async function messageSelector(replyToken, groupId, userId, name, message, times
     if (message === "抓") return await gotYou(groupId, userId);
     if (message === "抽") return ["pick", "抽你老木 林北不是Orz"];
     console.log(replyToken);
-    return recordMessage.textMessage(replyToken, groupId, userId, name, message, timestamp);
+    await recordMessage.textMessage(replyToken, groupId, userId, name, message, timestamp);
+    return
 }
 
 async function stickerRecorder(replyToken, groupId, userId, name, stickerId, timestamp) {
@@ -13,7 +14,13 @@ async function stickerRecorder(replyToken, groupId, userId, name, stickerId, tim
     return await recordMessage.stickerMessage(replyToken, groupId, userId, name, stickerId, timestamp);
 }
 
+async function imageRecorder(replyToken, groupId, userId, name, imagePath, timestamp) {
+    console.log("我接收到圖片");
+    return await recordMessage.imageMessage(replyToken, groupId, userId, name, imagePath, timestamp);
+}
+
 module.exports = {
     messageSelector,
-    stickerRecorder
+    stickerRecorder,
+    imageRecorder
 }
