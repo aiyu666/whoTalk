@@ -6,7 +6,6 @@ const messageParsing = require("./module/messageParsing");
 const messageDefense = require("./module/messageDefense");
 const gropEvent = require("./module/gropEvent");
 
-
 require("dotenv").config();
 
 const bot = linebot({
@@ -21,10 +20,8 @@ async function saveImage(data, filename) {
     let imageBuffer = new Buffer(data, 'base64');
 
     require('fs').writeFile('./public/img/' + filename, imageBuffer, function(err) {
-        if (err) {
-            console.error(err);
-        }
-        console.log('file ' + filename + ' saved.')
+        if (err) console.error(err);
+        console.log(`file ${filename} saved.`);
     });
 }
 
