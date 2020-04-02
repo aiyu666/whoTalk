@@ -124,5 +124,5 @@ bot.on("memberJoined", function(event) {
 const linebotParser = bot.parser();
 app.post('/linewebhook', linebotParser);
 app.use(express.static("public"));
-app.listen(5000);
+app.listen(process.env.PORT || 5000);
 console.log("Listening...5000 port")
