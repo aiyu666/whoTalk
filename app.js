@@ -1,11 +1,13 @@
 const linebot = require("linebot");
-const Buffer = require('buffer').Buffer;
 const express = require('express')
 const app = express()
 const messageParsing = require("./module/messageParsing");
 const messageDefense = require("./module/messageDefense");
 const gropEvent = require("./module/gropEvent");
-
+const uploadResource = require("./module/uploadResource");
+const recordMessage = require("./module/recordMessage");
+const sleep = require("./module/sleep");
+const MongoDB = require("./module/connectMongoDB");
 require("dotenv").config();
 
 const bot = linebot({
@@ -14,24 +16,13 @@ const bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-const sleep = () => new Promise((res, rej) => setTimeout(res, 2500));
-
-async function saveImage(data, filename) {
-    let imageBuffer = new Buffer(data, 'base64');
-
-    require('fs').writeFile('./public/img/' + filename, imageBuffer, function(err) {
-        if (err) console.error(err);
-        console.log(`file ${filename} saved.`);
-    });
-}
-
 bot.on("message", async function(event) {
     console.log(new Date());
     console.log(event);
 
     const eventReplyToken = event.replyToken;
-    const groupID = event.source.groupID;
-    const userId = event.source.userID;
+    const groupID = event.source.groupId;
+    const userId = event.source.userId;
     const eventTimestamp = event.timestamp;
     const messageType = event.message.type;
     const messageID = event.message.id;
@@ -57,7 +48,7 @@ bot.on("message", async function(event) {
 
         replyMessage = `一秒內輸入防禦碼: ${defenseCode}`;
         await bot.reply(replyToken, replyMessage);
-        await sleep();
+        await sleep.sleep(2500);
         if (await messageDefense.verifyDefenseStatus(messageTimestamp, defenseCode)) {
             replyMessage = "防禦成功";
             await event.reply(replyMessage);
@@ -82,6 +73,16 @@ bot.on("message", async function(event) {
                     originalContentUrl: messageData,
                     previewImageUrl: messageData
                 };
+                const db = await MongoDB.connectMongo();
+                const collection = await db.collection;
+                const messageID = msg[5];
+                let uploadStatus = msg[6];
+                let retryTimes = 60;
+                while (uploadStatus !== true && retryTimes > 0) {
+                    uploadStatus = await collection.find({ "_id": messageID }).toArray().catch(err => console.log(`Got some error from query data in got you ->${err}`));
+                    retryTimes--;
+                    sleep.sleep(1000);
+                }
                 replyMessage = ["尬~他剛剛貼下面這張圖，\n真的當本尬是塑膠", image];
                 break;
         }
@@ -91,10 +92,11 @@ bot.on("message", async function(event) {
     }
     if (messageType === "sticker") await messageParsing.stickerRecorder(eventReplyToken, groupID, userId, name, event.message.stickerId, eventTimestamp);
     if (messageType === "image") {
-        const imageContent = await bot.getMessageContent(messageID);
-        await saveImage(imageContent, `${messageID}.jpg`);
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
-        await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
+        const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
+        const imageContent = await bot.getMessageContent(messageID);
+        await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
+        await recordMessage.imageMessageUpdate(insertedData.insertedId);
     }
 });
 

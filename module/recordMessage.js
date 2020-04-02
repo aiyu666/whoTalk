@@ -35,12 +35,18 @@ async function imageMessage(replyToken, groupId, userId, name, imagePath, timest
         "imagePath": imagePath,
         "tag": "userImageMessage",
         "timestamp": timestamp,
-        "defenseStatus": ""
+        "defenseStatus": "",
+        "uploadStatus": false
     });
+}
+
+async function imageMessageUpdate(_id) {
+    return await MongoDB.updateData({ "_id": _id }, { $set: { "uploadStatus": true } });
 }
 
 module.exports = {
     textMessage,
     stickerMessage,
-    imageMessage
+    imageMessage,
+    imageMessageUpdate
 }

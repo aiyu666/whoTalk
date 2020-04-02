@@ -1,4 +1,5 @@
 const MongoDB = require("./connectMongoDB");
+const sleep = require("./sleep");
 
 module.exports = async function(groupId, userId) {
 
@@ -11,12 +12,13 @@ module.exports = async function(groupId, userId) {
 
     if (defenseStatus !== "") return ["skip", ""]
 
+    const messageID = queryData[0]._id;
     const defenseReplyToken = queryData[0].replyToken;
     const messageTag = queryData[0].tag;
     const messageTimestamp = queryData[0].timestamp;
     const defensCode = getRandomNumber(3);
 
-    await collection.updateOne({ "_id": queryData[0]._id }, { $set: { "defenseStatus": "In Defense" } }).catch(err => console.log(`Got some error from update data in got you ->${err}`));
+    await collection.updateOne({ "_id": messageID }, { $set: { "defenseStatus": "In Defense" } }).catch(err => console.log(`Got some error from update data in got you ->${err}`));
 
     if (messageTag === "userTextMessage") {
         const msg = await queryData[0].message;
@@ -28,7 +30,7 @@ module.exports = async function(groupId, userId) {
     }
     if (messageTag === "userImageMessage") {
         const imagePath = await queryData[0].imagePath;
-        return ["image", imagePath, defensCode, defenseReplyToken, messageTimestamp]
+        return ["image", imagePath, defensCode, defenseReplyToken, messageTimestamp, messageID, queryData[0].uploadStatus]
     }
 }
 
