@@ -13,7 +13,13 @@ async function stickerRecorder(replyToken, groupId, userId, name, stickerId, tim
     return await recordMessage.stickerMessage(replyToken, groupId, userId, name, stickerId, timestamp);
 }
 
+async function imageRecorder(replyToken, groupId, userId, name, imagePath, timestamp) {
+    console.log("我接收到圖片");
+    return await recordMessage.imageMessage(replyToken, groupId, userId, name, imagePath, timestamp);
+}
+
 module.exports = {
     messageSelector,
-    stickerRecorder
+    stickerRecorder,
+    imageRecorder
 }

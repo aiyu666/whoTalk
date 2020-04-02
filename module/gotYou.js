@@ -26,7 +26,10 @@ module.exports = async function(groupId, userId) {
         const stikerID = await queryData[0].stickerId;
         return ["sticker", stikerID, defensCode, defenseReplyToken, messageTimestamp]
     }
-
+    if (messageTag === "userImageMessage") {
+        const imagePath = await queryData[0].imagePath;
+        return ["image", imagePath, defensCode, defenseReplyToken, messageTimestamp]
+    }
 }
 
 function getRandomNumber(len) {
