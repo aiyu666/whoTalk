@@ -26,7 +26,27 @@ async function stickerMessage(replyToken, groupId, userId, name, stickerId, time
     });
 }
 
+async function imageMessage(replyToken, groupId, userId, name, imagePath, timestamp) {
+    return await MongoDB.insertData({
+        "replyToken": replyToken,
+        "groupId": groupId,
+        "userId": userId,
+        "name": name,
+        "imagePath": imagePath,
+        "tag": "userImageMessage",
+        "timestamp": timestamp,
+        "defenseStatus": "",
+        "uploadStatus": false
+    });
+}
+
+async function imageMessageUpdate(_id) {
+    return await MongoDB.updateData({ "_id": _id }, { $set: { "uploadStatus": true } });
+}
+
 module.exports = {
     textMessage,
-    stickerMessage
+    stickerMessage,
+    imageMessage,
+    imageMessageUpdate
 }

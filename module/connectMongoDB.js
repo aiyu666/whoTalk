@@ -31,10 +31,10 @@ async function queryData(data) {
 async function insertData(data) {
     const db = await connectMongo();
     const collection = await db.collection;
-    await collection.insertOne(data);
+    const result = await collection.insertOne(data);
     await console.log("Insert data sucess");
     await closeDB(db.connectDB);
-    return
+    return result
 }
 
 async function deleteData(data) {
@@ -49,10 +49,10 @@ async function deleteData(data) {
 async function updateData(query, data) {
     const db = await connectMongo();
     const collection = await db.collection;
-    await collection.updateOne(query, data);
-    await console.log("Delete data sucess");
+    const result = await collection.updateOne(query, data);
+    await console.log("Update data sucess");
     await closeDB(db.connectDB);
-    return
+    return result
 }
 
 module.exports = {
