@@ -5,6 +5,7 @@ const messageParsing = require("./module/messageParsing");
 const messageDefense = require("./module/messageDefense");
 const gropEvent = require("./module/gropEvent");
 const uploadResource = require("./module/uploadResource");
+const logInfo = require("./module/logInfo");
 const recordMessage = require("./module/recordMessage");
 const sleep = require("./module/sleep");
 const MongoDB = require("./module/connectMongoDB");
@@ -16,9 +17,8 @@ const bot = linebot({
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
 });
 
-bot.on("message", async function(event) {
-    console.log(new Date());
-    console.log(event);
+bot.on("message", async function (event) {
+    logInfo.printInfo(event)
 
     const eventReplyToken = event.replyToken;
     const groupID = event.source.groupId;
@@ -100,22 +100,22 @@ bot.on("message", async function(event) {
     }
 });
 
-bot.on("join", async function(event) {
+bot.on("join", async function (event) {
     return await gropEvent.joinGroup(event.source.groupId, event.timestamp);
 });
 
-bot.on("leave", async function(event) {
+bot.on("leave", async function (event) {
     await console.log(`I am leaved group -> ${JSON.stringify(event.source.groupId)}`)
     // await MongoDB.deleteData({
     //     "groupId": event.source.groupId,
     // });
 });
-bot.on("memberJoined", function(event) {
+bot.on("memberJoined", function (event) {
     console.log(`I got the memberJoined -> ${JSON.stringify(event)}`)
-    event.reply("尬～～～初次見面你好").then(function(data) {
+    event.reply("尬～～～初次見面你好").then(function (data) {
         // success
         console.log("Reply success")
-    }).catch(function(error) {
+    }).catch(function (error) {
         // error
         console.log(`Some error message => ${error}`)
     });
