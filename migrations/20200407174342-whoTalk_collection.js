@@ -4,7 +4,7 @@ module.exports = {
     // See https://github.com/seppevs/migrate-mongo/#creating-a-new-migration-script
     // Example:
     // await db.collection('albums').updateOne({artist: 'The Beatles'}, {$set: {blacklisted: true}});
-    await db.createCollection("whoTalk", { capped : true, size : 5242880, max : 5000 } )
+    await db.createCollection("whoTalk")
   },
 
   async down(db, client) {
