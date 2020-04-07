@@ -1,6 +1,11 @@
+## Migrate
+
+* Migrate up: `npm run migrateUp`
+* Migrate down: `npm run migrateDown`
+
 ## Tools
 
-### adminmongo
+### Adminmongo
 
 1. `docker-compose up`
 2. Open terminal. Connect to `localhost:1234`
