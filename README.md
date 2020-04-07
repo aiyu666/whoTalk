@@ -7,6 +7,8 @@
 
 ### Adminmongo
 
+![](./docs/image/adminMongo.jpg)
+
 1. `docker-compose up`
 2. Open terminal. Connect to `localhost:1234`
 3. Set connection configs
