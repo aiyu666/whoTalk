@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon --inspect app.js",
     "migrateUp": "migrate-mongo up",
     "migrateDown": "migrate-mongo down"
   },
@@ -17,6 +18,7 @@
     "mongodb": "^3.5.5"
   },
   "devDependencies": {
-    "migrate-mongo": "^7.1.0"
+    "migrate-mongo": "^7.1.0",
+    "nodemon": "^2.0.2"
   }
 }

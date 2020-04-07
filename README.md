@@ -1,3 +1,15 @@
+## How to use
+
+### development
+
+1. `npm install`
+2. `npm run dev`
+
+### production
+
+1. `npm install --production`
+2. `npm run dev` PS: You can use vscode debugging feature to connect server
+
 ## Migrate
 
 * Migrate up: `npm run migrateUp`
