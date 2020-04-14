@@ -4,7 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon --inspect app.js",
+    "migrateUp": "migrate-mongo up",
+    "migrateDown": "migrate-mongo down"
   },
   "author": "",
   "license": "ISC",
@@ -13,5 +16,9 @@
     "dotenv": "^8.2.0",
     "linebot": "^1.5.3",
     "mongodb": "^3.5.5"
+  },
+  "devDependencies": {
+    "migrate-mongo": "^7.1.0",
+    "nodemon": "^2.0.2"
   }
 }
