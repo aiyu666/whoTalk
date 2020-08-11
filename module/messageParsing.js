@@ -18,7 +18,7 @@ async function messageSelector(replyToken, groupId, userId, name, message, times
                 "action": {
                     "type": "message",
                     "label": label,
-                    "text": "happy"
+                    "text": "我色胚，我丟臉，我偷點圖片。"
                 }
             })
         }
