@@ -5,7 +5,7 @@ module.exports = async function (groupId, userId, ron = false) {
 
     const db = await MongoDB.connectMongo();
     const collection = await db.collection;
-    const ronCondition = ron ? "$ne" : "$eq";
+    const ronCondition = ron ? "$eq" : "$ne";
     const queryData = await collection.find({ "groupId": groupId, "userId": { ronCondition: userId } }).sort({ _id: -1 }).limit(1).toArray().catch(err => console.log(`Got some error from query data in got you ->${err}`));
     await console.log("抓到了！！！");
 
