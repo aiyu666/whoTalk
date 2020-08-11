@@ -1,11 +1,12 @@
 const MongoDB = require("./connectMongoDB");
 const sleep = require("./sleep");
 
-module.exports = async function (groupId, userId) {
+module.exports = async function (groupId, userId, ron = false) {
 
     const db = await MongoDB.connectMongo();
     const collection = await db.collection;
-    const queryData = await collection.find({ "groupId": groupId, "userId": { $ne: userId } }).sort({ _id: -1 }).limit(1).toArray().catch(err => console.log(`Got some error from query data in got you ->${err}`));
+    const ronCondition = ron ? "$ne" : "$eq";
+    const queryData = await collection.find({ "groupId": groupId, "userId": { ronCondition: userId } }).sort({ _id: -1 }).limit(1).toArray().catch(err => console.log(`Got some error from query data in got you ->${err}`));
     await console.log("抓到了！！！");
 
     const defenseStatus = queryData[0].defenseStatus;
