@@ -5,7 +5,7 @@ const ronID = "Ub0d1d64651a42ab071b4231dec86cae5";
 
 async function messageSelector(replyToken, groupId, userId, name, message, timestamp) {
     if (message === "抓") return await gotYou(groupId, userId);
-    if (ronKeyword.includes(message)) return await gotYou(groupId, ronID);
+    if (ronKeyword.includes(message)) return await gotYou(groupId, ronID, ron = true);
     if (message === "抽") return ["pick", "抽你老木 林北不是Orz"];
     console.log(replyToken);
     await recordMessage.textMessage(replyToken, groupId, userId, name, message, timestamp);
