@@ -1,13 +1,37 @@
 const recordMessage = require("./recordMessage");
 const gotYou = require("./gotYou");
+const pickDirty = require("./pickDirty");
 const ronKeyword = ["抓ron", "抓Ron"];
 const ronID = "Ub0d1d64651a42ab071b4231dec86cae5";
 
 async function messageSelector(replyToken, groupId, userId, name, message, timestamp) {
     if (message === "抓") return await gotYou(groupId, userId);
     if (ronKeyword.includes(message)) return await gotYou(groupId, ronID, ron = true);
-    if (message === "抽") return ["pick", "抽你老木 林北不是Orz"];
-    console.log(replyToken);
+    if (message === "抽") {
+        const random_dirty = Math.random() >= 0.5;
+        const label = (random_dirty) ? 'dirty' : 'beauty';
+        const columns = []
+        const mediaList = await pickDirty(random_dirty);
+        for (mediaURL of mediaList) {
+            columns.push({
+                "imageUrl": mediaURL,
+                "action": {
+                    "type": "message",
+                    "label": label,
+                    "text": "happy"
+                }
+            })
+        }
+        const imageCarouselTemplate = {
+            "type": "template",
+            "altText": "舒服的圖片",
+            "template": {
+                "type": "image_carousel",
+                "columns": columns,
+            }
+        };
+        return ["pick", imageCarouselTemplate];
+    }
     await recordMessage.textMessage(replyToken, groupId, userId, name, message, timestamp);
     return
 }
