@@ -22,9 +22,7 @@ describe('Test pick', () => {
   });
 
   test('Pick photo will not return thumbnail image', async () => {
-    const postData = {
-      'mediaMeta': [{ 'type': 'test', 'url': 'https://i.imugr.com/test' }],
-    };
+    const postData = { 'mediaMeta': [{ 'type': 'test', 'url': 'https://i.imugr.com/test' }] };
     const mockData = [];
     for (let i = 0; i < 10; i += 1) mockData[i] = postData;
     mockData.push([{ 'type': 'image/thumbnail', 'url': 'https://i.imugr.com/test' }]);
