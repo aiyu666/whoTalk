@@ -7,9 +7,11 @@ jest.mock('got');
 describe('Test pick', () => {
   test('Pick photo fail will return the dog image', async () => {
     expectData = process.env.BAD_THING_IMAGE;
-    const resp = await pickPhoto(true, 1, -100);
+    got.mockResolvedValue({ 'statusCode': 400 });
+    const resp = await pickPhoto(true, -100);
     expect(resp.length).toBe(1);
-    expect(resp[0]).toBe(expectData);
+    expect(resp[0][0]).toBe(-1);
+    expect(resp[0][1]).toBe(expectData);
   });
 
   test('Pick photo will return image list', async () => {
