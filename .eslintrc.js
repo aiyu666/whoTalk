@@ -15,6 +15,7 @@ module.exports = {
     'ecmaVersion': 2018,
   },
   'rules': {
+    'max-len': ['error', { 'code': 110 }],
     'object-curly-spacing': ['error', 'always'],
     'indent': ['error', 2, { 'SwitchCase': 1 }],
   },
