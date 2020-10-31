@@ -2,9 +2,9 @@ require('dotenv').config();
 
 const linebot = require('linebot');
 const express = require('express');
-const { EventEmitter } = require('events');
+
 const parseMessage = require('./lib/parseMessage');
-const messageEvent = new EventEmitter();
+const { messageBuff } = require('./lib/eventWorker');
 const app = express();
 
 const PORT = process.env.PORT || 5000;
@@ -15,13 +15,19 @@ const bot = linebot({
   channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
 });
 
-bot.on('message', function(event) {
-  const profile = bot.getUserProfile(userId);
-  const userName = profile.displayName ? profile.displayName : '某某某';
-  return parseMessage(messageType, event, userName);
+bot.on('message', async function(event) {
+  try {
+    parseMessage(event);
+  } catch (error) {
+    console.log(`Some error on got message: ${error}`);
+  }
 });
 
-bot.on('join', function(event) {
+bot.on('join', async function(event) {
+  const resp = await event.source.member();
+  console.log(resp);
+  console.log(resp.statusCode);
+  console.log(resp.body);
   return;
 });
 
@@ -29,16 +35,17 @@ bot.on('leave', function(event) {
   return;
 });
 
-bot.on('memberJoined', function(event) {
+bot.on('memberJoined', async function(event) {
+  console.log(event);
+  const resp = await event.source.member();
+  console.log(resp);
+  console.log(resp.statusCode);
+  console.log(resp.body);
   return;
 });
 
 bot.on('unsend', function(event) {
-  return;
-});
-
-messageEvent.on('replyMessage', function(replyToken, message) {
-  return bot.reply(replyToken, message);
+  return messageBuff(event);
 });
 
 const linebotParser = bot.parser();
