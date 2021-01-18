@@ -16,8 +16,8 @@ function getRandom(arr, n) {
 
 module.exports = async (dirty = true) => {
     const targetBoard = (dirty) ? 'sex' : 'beauty';
-    const mediaList = []
-    const res = await getRequest(`https://www.dcard.tw/service/api/v2/forums/${targetBoard}/posts?limit=100`);
+    const mediaList = [];
+    const res = await getRequest(`https://www.dcard.tw/v2/forums/${targetBoard}/posts?limit=100`);
     if (!(res.statusCode === 200)) return;
     const responseBody = JSON.parse(res.body);
     const targetPosts = responseBody.filter((post) => 'mediaMeta' in post && post.mediaMeta.length !== 0);
