@@ -16,12 +16,11 @@
     "express": "^4.17.1",
     "got": "^11.8.1",
     "linebot": "^1.5.3",
-    "mongodb": "^3.5.5",
     "redis": "^3.0.2",
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "migrate-mongo": "^7.1.0",
+    "migrate-mongo": "^8.1.4",
     "nodemon": "^2.0.4"
   }
 }
