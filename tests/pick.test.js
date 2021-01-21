@@ -17,7 +17,7 @@ describe('Test pick', () => {
   test('Pick photo will return image list', async () => {
     const postData = { 'mediaMeta': [{ 'type': 'test', 'url': 'https://i.imugr.com/test' }] };
     const mockData = [];
-    for (let i = 0; i < 10; i += 1) mockData[i] = postData;
+    for (let i = 0; i < 12; i += 1) mockData[i] = postData;
     got.mockResolvedValue({ 'body': mockData });
     const resp = await pickPhoto(true, 1, 100);
     expect(resp.length).toStrictEqual(10);
@@ -26,7 +26,7 @@ describe('Test pick', () => {
   test('Pick photo will not return thumbnail image', async () => {
     const postData = { 'mediaMeta': [{ 'type': 'test', 'url': 'https://i.imugr.com/test' }] };
     const mockData = [];
-    for (let i = 0; i < 10; i += 1) mockData[i] = postData;
+    for (let i = 0; i < 12; i += 1) mockData[i] = postData;
     mockData.push([{ 'type': 'image/thumbnail', 'url': 'https://i.imugr.com/test' }]);
     got.mockResolvedValue({ 'body': mockData });
     const resp = await pickPhoto(true, 1, 100);
