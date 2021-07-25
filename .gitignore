@@ -1,4 +1,5 @@
 node_modules
-ngrok
+ngrok.*
 .env
 public/img/*
+coverage
