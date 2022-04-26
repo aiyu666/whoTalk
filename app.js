@@ -1,4 +1,4 @@
-const line = require('@line/bot-sdk');
+const linebot = require("linebot");
 const express = require('express')
 const app = express()
 const messageParsing = require("./module/messageParsing");
@@ -13,7 +13,7 @@ require("dotenv").config();
 
 const PORT = process.env.PORT || 5000
 
-const bot = new line.Client({
+const bot = linebot({
     channelId: process.env.CHANNEL_ID,
     channelSecret: process.env.CHANNEL_SECRET,
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN
@@ -96,10 +96,12 @@ bot.on("message", async function (event) {
     if (messageType === "image") {
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
         const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
-        const imageContent = await bot.getMessageContent(messageID);
-        console.log(`Image content: ${imageContent}`);
-        await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
-        recordMessage.imageMessageUpdate(insertedData.insertedId);
+        const stream = await bot.getMessageContent(messageID);
+        stream.on('data', (imageContent) => {
+            console.log(`Image content: ${imageContent}`);
+            uploadResource.saveImage(imageContent, `${messageID}.jpg`);
+            recordMessage.imageMessageUpdate(insertedData.insertedId);
+        })
     }
 });
 
