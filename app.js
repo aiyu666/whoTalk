@@ -4,12 +4,12 @@ const app = express()
 const messageParsing = require("./module/messageParsing");
 const messageDefense = require("./module/messageDefense");
 const gropEvent = require("./module/gropEvent");
-const uploadResource = require("./module/uploadResource");
 const logInfo = require("./module/logInfo");
 const recordMessage = require("./module/recordMessage");
 const sleep = require("./module/sleep");
 const MongoDB = require("./module/connectMongoDB");
-const { getRequest } = require("./module/request");
+const axios = require('axios');
+const fs = require('fs');
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000
@@ -97,16 +97,17 @@ bot.on("message", async function (event) {
     if (messageType === "image") {
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
         const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
-        const getOptions = {
+
+        await axios({
+            method: 'get',
             url: `https://api-data.line.me/v2/bot/message/${messageID}/content`,
-            headers: {
-                "Authorization": `Bearer ${process.env.CHANNEL_ACCESS_TOKEN}`,
-            },
-            encoding: null
-        };
-        const imageContent = await getRequest(getOptions).body;
-        console.log(`Image content: ${imageContent}`);
-        await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
+            responseType: 'stream',
+            headers: { 'Authorization': `Bearer ${process.env.CHANNEL_ACCESS_TOKEN}` }
+        })
+            .then(function (response) {
+                response.data.pipe(fs.createWriteStream(`./public/img/${messageID}.jpg`))
+            });
+
         await recordMessage.imageMessageUpdate(insertedData.insertedId);
     }
 });
