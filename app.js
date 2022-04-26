@@ -102,7 +102,7 @@ bot.on("message", async function (event) {
             headers: {
                 "Authorization": process.env.CHANNEL_ACCESS_TOKEN,
             }
-        }
+        };
         const imageContent = await getRequest(getOptions);
         console.log(`Image content: ${imageContent}`);
         await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
