@@ -97,6 +97,7 @@ bot.on("message", async function (event) {
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
         const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
         const imageContent = await bot.getMessageContent(messageID);
+        console.log(`Image content: ${imageContent}`);
         await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
         await recordMessage.imageMessageUpdate(insertedData.insertedId);
     }
