@@ -6,12 +6,12 @@ const request = require('request');
 async function getRequest(options) {
     return new Promise((resolve, reject) => {
         request.get(options, (error, response) => {
-            if (error) reject(new Error(`Ops! Some error about post request-> ${error}`));
+            if (error) reject(new Error(`Ops! Some error about get request-> ${error}`));
             resolve(response);
         });
     });
 }
 
 module.exports = {
-    getRequest
+    getRequest,
 };
