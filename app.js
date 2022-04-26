@@ -101,8 +101,8 @@ bot.on("message", async function (event) {
             .then((stream) => {
                 stream.on('data', (imageContent) => {
                     console.log(`Image content: ${imageContent}`);
-                    await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
-                    await recordMessage.imageMessageUpdate(insertedData.insertedId);
+                    uploadResource.saveImage(imageContent, `${messageID}.jpg`);
+                    recordMessage.imageMessageUpdate(insertedData.insertedId);
                 })
                 stream.on('error', (err) => {
                     console.error(`Error when get message content: ${err}`);
