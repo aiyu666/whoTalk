@@ -9,6 +9,7 @@ const logInfo = require("./module/logInfo");
 const recordMessage = require("./module/recordMessage");
 const sleep = require("./module/sleep");
 const MongoDB = require("./module/connectMongoDB");
+const getRequest = require("./module/getRequest");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000
@@ -96,12 +97,16 @@ bot.on("message", async function (event) {
     if (messageType === "image") {
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
         const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
-        const stream = await bot.getMessageContent(messageID);
-        stream.on('data', (imageContent) => {
-            console.log(`Image content: ${imageContent}`);
-            uploadResource.saveImage(imageContent, `${messageID}.jpg`);
-            recordMessage.imageMessageUpdate(insertedData.insertedId);
-        })
+        const getOptions = {
+            url: `https://api-data.line.me/v2/bot/message/${messageID}/content`,
+            headers: {
+                "Authorization": process.env.CHANNEL_ACCESS_TOKEN,
+            }
+        }
+        const imageContent = await getRequest(getOptions);
+        console.log(`Image content: ${imageContent}`);
+        await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
+        await recordMessage.imageMessageUpdate(insertedData.insertedId);
     }
 });
 
