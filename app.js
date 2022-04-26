@@ -96,18 +96,19 @@ bot.on("message", async function (event) {
     if (messageType === "image") {
         const imagePath = `https://whotalk.herokuapp.com/img/${messageID}.jpg`;
         const insertedData = await messageParsing.imageRecorder(eventReplyToken, groupID, userId, name, imagePath, eventTimestamp);
+        const downloadPath = `./public/img/${messageID}.jpg`
 
-        await bot.getMessageContent(messageID)
-            .then((stream) => {
-                stream.on('data', (imageContent) => {
-                    console.log(`Image content: ${imageContent}`);
-                    uploadResource.saveImage(imageContent, `${messageID}.jpg`);
-                    recordMessage.imageMessageUpdate(insertedData.insertedId);
-                })
-                stream.on('error', (err) => {
-                    console.error(`Error when get message content: ${err}`);
-                })
-            });
+        bot.getMessageContent(messageID)
+            .then((stream) => new Promise((resolve, reject) => {
+                const writable = require('fs').createWriteStream(downloadPath);
+                stream.pipe(writable);
+                stream.on('end', () => resolve(downloadPath));
+                stream.on('error', reject);
+            }));
+        recordMessage.imageMessageUpdate(insertedData.insertedId);
+        // const imageContent = await bot.getMessageContent(messageID);
+        // console.log(`Image content: ${imageContent}`);
+        // await uploadResource.saveImage(imageContent, `${messageID}.jpg`);
     }
 });
 
