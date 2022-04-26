@@ -13,5 +13,5 @@ async function getRequest(options) {
 }
 
 module.exports = {
-    getRequest,
+    getRequest
 };
