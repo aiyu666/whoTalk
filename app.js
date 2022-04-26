@@ -100,7 +100,7 @@ bot.on("message", async function (event) {
         const getOptions = {
             url: `https://api-data.line.me/v2/bot/message/${messageID}/content`,
             headers: {
-                "Authorization": process.env.CHANNEL_ACCESS_TOKEN,
+                "Authorization": `Bearer ${process.env.CHANNEL_ACCESS_TOKEN}`,
             },
             encoding: null
         };
