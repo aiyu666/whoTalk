@@ -9,7 +9,7 @@ const logInfo = require("./module/logInfo");
 const recordMessage = require("./module/recordMessage");
 const sleep = require("./module/sleep");
 const MongoDB = require("./module/connectMongoDB");
-const getRequest = require("./module/getRequest");
+const getRequest = require("./module/request");
 require("dotenv").config();
 
 const PORT = process.env.PORT || 5000
