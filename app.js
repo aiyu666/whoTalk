@@ -51,7 +51,7 @@ bot.on("message", async function (event) {
 
         replyMessage = `一秒內輸入防禦碼: ${defenseCode}`;
         await bot.reply(replyToken, replyMessage);
-        await sleep.sleep(2500);
+        await sleep.sleep(3000);
         if (await messageDefense.verifyDefenseStatus(messageTimestamp, defenseCode)) {
             replyMessage = "防禦成功";
             await event.reply(replyMessage);
