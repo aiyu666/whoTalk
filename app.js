@@ -47,20 +47,20 @@ bot.on("message", async function (event) {
         const defenseCode = msg[2];
         const replyToken = msg[3];
         const messageTimestamp = msg[4];
-        let replyMessage;
 
-        replyMessage = `一秒內輸入防禦碼: ${defenseCode}`;
-        await bot.reply(replyToken, replyMessage);
-        await sleep.sleep(2800);
-        if (await messageDefense.verifyDefenseStatus(messageTimestamp, defenseCode)) {
-            replyMessage = "防禦成功";
-            await event.reply(replyMessage);
+        const defenseRequestMessage = `<Hint> 兩秒內輸入防禦碼: ${defenseCode}`;
+        await bot.reply(replyToken, defenseRequestMessage);
+        await sleep.sleep(5000);
+
+        if (await messageDefense.verifyDefenseStatus(eventTimestamp, defenseCode)) {
+            const defenseSuccessMessage = "防禦成功";
+            await event.reply(defenseSuccessMessage);
             return
         }
 
         switch (messageType) {
             case "text":
-                replyMessage = ["尬~他剛剛說下面這句話，\n真的當本尬是塑膠", messageData];
+                await event.reply(["尬~他剛剛說下面這句話，\n真的當本尬是塑膠", messageData]);
                 break;
             case "sticker":
                 image = {
@@ -68,7 +68,7 @@ bot.on("message", async function (event) {
                     originalContentUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`,
                     previewImageUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`
                 };
-                replyMessage = ["尬~他剛剛貼下面這張貼圖，\n真的當本尬是塑膠", image];
+                await event.reply(["尬~他剛剛貼下面這張貼圖，\n真的當本尬是塑膠", image]);
                 break;
             case "image":
                 image = {
@@ -86,12 +86,11 @@ bot.on("message", async function (event) {
                     retryTimes--;
                     sleep.sleep(1000);
                 }
-                replyMessage = ["尬~他剛剛貼下面這張圖，\n真的當本尬是塑膠", image];
+                await event.reply(["尬~他剛剛貼下面這張圖，\n真的當本尬是塑膠", image]);
                 break;
         }
 
-        await event.reply(replyMessage);
-        await console.log("Reply success");
+        console.log("Reply success");
     }
     if (messageType === "sticker") await messageParsing.stickerRecorder(eventReplyToken, groupID, userId, name, event.message.stickerId, eventTimestamp);
     if (messageType === "image") {
