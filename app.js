@@ -48,19 +48,24 @@ bot.on("message", async function (event) {
         const replyToken = msg[3];
         const messageTimestamp = msg[4];
 
-        const defenseRequestMessage = `<Hint> 兩秒內輸入防禦碼: ${defenseCode}`;
+        const defenseRequestMessage = `發呆啊？他抓的時候就開始倒數 1.5 秒了\n快輸入防禦碼: ${defenseCode}`;
         await bot.reply(replyToken, defenseRequestMessage);
         await sleep.sleep(5000);
 
-        if (await messageDefense.verifyDefenseStatus(eventTimestamp, defenseCode)) {
-            const defenseSuccessMessage = "防禦成功";
+        const defenseTimestamp = await messageDefense.verifyDefenseStatus(eventTimestamp, defenseCode)
+        console.log(`defenseTimestamp: ${defenseTimestamp}`);
+
+        if (defenseTimestamp && defenseTimestamp <= 1500) {
+            const defenseSuccessMessage = `哇靠，他只花了 ${defenseTimestamp} 毫秒就防禦成功`;
             await event.reply(defenseSuccessMessage);
             return
         }
 
+        const defenseFailMessage = defenseTimestamp > 1500 ? `可憐哪，花了 ${defenseTimestamp} 毫秒還防不到` : "可憐哪，484 連防都不防了";
+
         switch (messageType) {
             case "text":
-                await event.reply(["尬~他剛剛說下面這句話，\n真的當本尬是塑膠", messageData]);
+                await event.reply([`尬~${defenseFailMessage}\n他剛剛說下面這句話，\n真的當本尬是塑膠`, messageData]);
                 break;
             case "sticker":
                 image = {
@@ -68,7 +73,7 @@ bot.on("message", async function (event) {
                     originalContentUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`,
                     previewImageUrl: `https://stickershop.line-scdn.net/stickershop/v1/sticker/${messageData}/android/sticker.png`
                 };
-                await event.reply(["尬~他剛剛貼下面這張貼圖，\n真的當本尬是塑膠", image]);
+                await event.reply([`尬~${defenseFailMessage}\n他剛剛貼下面這張貼圖，\n真的當本尬是塑膠`, image]);
                 break;
             case "image":
                 image = {
@@ -86,7 +91,7 @@ bot.on("message", async function (event) {
                     retryTimes--;
                     sleep.sleep(1000);
                 }
-                await event.reply(["尬~他剛剛貼下面這張圖，\n真的當本尬是塑膠", image]);
+                await event.reply([`尬~${defenseFailMessage}\n他剛剛貼下面這張圖，\n真的當本尬是塑膠`, image]);
                 break;
         }
 
